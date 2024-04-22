@@ -141,11 +141,6 @@ class _SelectionCardState extends State<SelectionCard>
 
   Future<void> handleAnimation(SelectionCard oldWidget) async {
     if (widget.selected != oldWidget.selected) {
-      if (oldWidget.selected && !widget.selected) {
-        await Future.delayed(
-          reverseAnimationDuration,
-        );
-      }
       isSelected = widget.selected;
       if (isSelected) {
         _controller!.forward();
