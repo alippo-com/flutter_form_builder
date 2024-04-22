@@ -26,6 +26,59 @@ class _CompleteFormState extends State<CompleteForm> {
 
   @override
   Widget build(BuildContext context) {
+    InfoModalConfig config = InfoModalConfig(
+      leadingIcon: const Icon(
+        Icons.post_add_outlined,
+        size: 40,
+      ),
+      description: const Opacity(
+        opacity: 0.79,
+        child: Text(
+          'Don\'t know the skill? It\'s okay, we will teach you market-style skills too. and you can earn up to 5000 - 6000 per month.',
+          style: TextStyle(
+            color: Color(0xFF003B67),
+            fontSize: 14,
+            fontFamily: 'PP Pangram Sans',
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+      shape: RoundedRectangleBorder(
+        side: const BorderSide(width: 1.30, color: Color(0x1915749D)),
+        borderRadius: BorderRadius.circular(13),
+      ),
+      gradient: const LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: [Color(0x00FAF9F9), Color(0xFF94B8D2)],
+      ),
+    );
+    InfoModalConfig config2 = InfoModalConfig(
+      leadingIcon: const Icon(
+        Icons.post_add_outlined,
+        size: 40,
+      ),
+      description: const Opacity(
+        opacity: 0.79,
+        child: Text(
+          'Don\'t know the skill? It\'s okay, we will teach you market-style skills too. ',
+          style: TextStyle(
+            color: Color(0xFF003B67),
+            fontSize: 14,
+            fontFamily: 'PP Pangram Sans',
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+      ),
+      shape: RoundedRectangleBorder(
+        side: const BorderSide(width: 1.30, color: Color(0x1915749D)),
+        borderRadius: BorderRadius.circular(13),
+      ),
+      gradient: const LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [Color(0x00EB467A), Color(0xFFFF976E)]),
+    );
     return SingleChildScrollView(
       child: Column(
         children: <Widget>[
@@ -42,12 +95,28 @@ class _CompleteFormState extends State<CompleteForm> {
               'best_language': 'Dart',
               'age': '13',
               'gender': 'Male',
-              'languages_filter': ['Dart']
+              'languages_filter': ['Dart'],
+              'languages_choice': '5000 - 6000',
             },
             skipDisabled: true,
             child: Column(
               children: <Widget>[
                 const SizedBox(height: 15),
+                FormBuilderTextField(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  name: 'text_field',
+                  decoration: const InputDecoration(
+                    //labelText: 'Text Field',
+                    hintText: 'Hint Text',
+                    filled: true,
+                  ),
+                  onChanged: _onChanged,
+                  // valueTransformer: (text) => num.tryParse(text),
+                  keyboardType: TextInputType.multiline,
+                  textInputAction: TextInputAction.next,
+                  minLines: 1,
+                  maxLines: null,
+                ),
                 FormBuilderDateTimePicker(
                   name: 'date',
                   initialEntryMode: DatePickerEntryMode.calendar,
@@ -286,37 +355,78 @@ class _CompleteFormState extends State<CompleteForm> {
                     FormBuilderValidators.maxLength(3),
                   ]),
                 ),
-                FormBuilderChoiceChip<String>(
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  decoration: const InputDecoration(
-                      labelText:
-                          'Ok, if I had to choose one language, it would be:'),
-                  name: 'languages_choice',
-                  initialValue: 'Dart',
-                  options: const [
-                    FormBuilderChipOption(
-                      value: 'Dart',
-                      avatar: CircleAvatar(child: Text('D')),
+                Builder(builder: (context) {
+                  return AlippoSelectionCardGroups<String>(
+                    autovalidateMode: AutovalidateMode.onUserInteraction,
+                    name: 'languages_choice',
+                    // initialValue: 'Java',
+                    padding:
+                        const EdgeInsets.only(top: 20, bottom: 20, left: 50),
+                    expanded: true,
+                    spacing: 20,
+                    selectedLabelStyle: const TextStyle(
+                      color: Color(0xFFFAF9F9),
+                      fontSize: 18,
+                      fontFamily: 'PP Pangram Sans Rounded',
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.36,
                     ),
-                    FormBuilderChipOption(
-                      value: 'Kotlin',
-                      avatar: CircleAvatar(child: Text('K')),
+                    unselectedLabelStyle: const TextStyle(
+                      color: Color(0xFF1A4F76),
+                      fontSize: 18,
+                      fontFamily: 'PP Pangram Sans Rounded',
+                      fontWeight: FontWeight.w400,
+                      letterSpacing: -0.36,
                     ),
-                    FormBuilderChipOption(
-                      value: 'Java',
-                      avatar: CircleAvatar(child: Text('J')),
+                    selectedCardColor: const Color(0xFF1A4F76),
+                    defaultCardColor: const Color(0xFFFAF9F9),
+                    selectedShape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        width: 2,
+                        color: Colors.black.withOpacity(0.36000001430511475),
+                      ),
+                      borderRadius: BorderRadius.circular(17),
                     ),
-                    FormBuilderChipOption(
-                      value: 'Swift',
-                      avatar: CircleAvatar(child: Text('S')),
+                    unselectedShape: RoundedRectangleBorder(
+                      side: BorderSide(
+                        width: 2,
+                        color: Colors.black.withOpacity(0.07000000029802322),
+                      ),
+                      borderRadius: BorderRadius.circular(17),
                     ),
-                    FormBuilderChipOption(
-                      value: 'Objective-C',
-                      avatar: CircleAvatar(child: Text('O')),
-                    ),
-                  ],
-                  onChanged: _onChanged,
-                ),
+                    options: [
+                      SelectionCardOption(
+                        value: '5000 - 6000',
+                        avatar: const Icon(Icons.monetization_on_outlined),
+                        infoModalConfig: config,
+                      ),
+                      SelectionCardOption(
+                        value: 'Kotlin',
+                        avatar: const Icon(Icons.monetization_on_outlined),
+                        infoModalConfig: config2,
+                      ),
+                      SelectionCardOption(
+                        value: 'Java',
+                        avatar: const Icon(Icons.monetization_on_outlined),
+                        infoModalConfig: config,
+                      ),
+                      SelectionCardOption(
+                        value: 'Swift',
+                        avatar: const Icon(Icons.monetization_on_outlined),
+                        infoModalConfig: config2,
+                      ),
+                      SelectionCardOption(
+                        value: 'Objective-C',
+                        avatar: const Icon(Icons.monetization_on_outlined),
+                        infoModalConfig: config,
+                      ),
+                    ],
+                    onChanged: _onChanged,
+                    validator: FormBuilderValidators.compose([
+                      FormBuilderValidators.minLength(1),
+                    ]),
+                  );
+                }),
               ],
             ),
           ),
