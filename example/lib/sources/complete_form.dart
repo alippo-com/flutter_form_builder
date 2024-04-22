@@ -50,7 +50,10 @@ class _CompleteFormState extends State<CompleteForm> {
       gradient: const LinearGradient(
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
-        colors: [Color(0x00FAF9F9), Color(0xFF94B8D2)],
+        colors: [
+          Color(0x00FAF9F9),
+          Color(0xFF94B8D2),
+        ],
       ),
     );
     InfoModalConfig config2 = InfoModalConfig(
@@ -97,6 +100,7 @@ class _CompleteFormState extends State<CompleteForm> {
               'gender': 'Male',
               'languages_filter': ['Dart'],
               'languages_choice': '5000 - 6000',
+              'languages_selection': ['5000 - 6000', 'Java'],
             },
             skipDisabled: true,
             child: Column(
@@ -355,78 +359,141 @@ class _CompleteFormState extends State<CompleteForm> {
                     FormBuilderValidators.maxLength(3),
                   ]),
                 ),
-                Builder(builder: (context) {
-                  return AlippoSelectionCardGroups<String>(
-                    autovalidateMode: AutovalidateMode.onUserInteraction,
-                    name: 'languages_choice',
-                    // initialValue: 'Java',
-                    padding:
-                        const EdgeInsets.only(top: 20, bottom: 20, left: 50),
-                    expanded: true,
-                    spacing: 20,
-                    selectedLabelStyle: const TextStyle(
-                      color: Color(0xFFFAF9F9),
-                      fontSize: 18,
-                      fontFamily: 'PP Pangram Sans Rounded',
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.36,
+                AlippoCustomRadioGroup<String>(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  name: 'languages_choice',
+                  // initialValue: 'Java',
+                  padding: const EdgeInsets.only(top: 20, bottom: 20, left: 50),
+                  expanded: true,
+                  spacing: 20,
+                  selectedLabelStyle: const TextStyle(
+                    color: Color(0xFFFAF9F9),
+                    fontSize: 18,
+                    fontFamily: 'PP Pangram Sans Rounded',
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.36,
+                  ),
+                  unselectedLabelStyle: const TextStyle(
+                    color: Color(0xFF1A4F76),
+                    fontSize: 18,
+                    fontFamily: 'PP Pangram Sans Rounded',
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: -0.36,
+                  ),
+                  selectedCardColor: const Color(0xFF1A4F76),
+                  defaultCardColor: const Color(0xFFFAF9F9),
+                  selectedShape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      width: 2,
+                      color: Colors.black.withOpacity(0.36000001430511475),
                     ),
-                    unselectedLabelStyle: const TextStyle(
-                      color: Color(0xFF1A4F76),
-                      fontSize: 18,
-                      fontFamily: 'PP Pangram Sans Rounded',
-                      fontWeight: FontWeight.w400,
-                      letterSpacing: -0.36,
+                    borderRadius: BorderRadius.circular(17),
+                  ),
+                  unselectedShape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      width: 2,
+                      color: Colors.black.withOpacity(0.07000000029802322),
                     ),
-                    selectedCardColor: const Color(0xFF1A4F76),
-                    defaultCardColor: const Color(0xFFFAF9F9),
-                    selectedShape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 2,
-                        color: Colors.black.withOpacity(0.36000001430511475),
-                      ),
-                      borderRadius: BorderRadius.circular(17),
+                    borderRadius: BorderRadius.circular(17),
+                  ),
+                  options: [
+                    SelectionCardOption(
+                      value: '5000 - 6000',
+                      avatar: const Icon(Icons.monetization_on_outlined),
+                      infoModalConfig: config,
                     ),
-                    unselectedShape: RoundedRectangleBorder(
-                      side: BorderSide(
-                        width: 2,
-                        color: Colors.black.withOpacity(0.07000000029802322),
-                      ),
-                      borderRadius: BorderRadius.circular(17),
+                    SelectionCardOption(
+                      value: 'Kotlin',
+                      avatar: const Icon(Icons.monetization_on_outlined),
+                      infoModalConfig: config2,
                     ),
-                    options: [
-                      SelectionCardOption(
-                        value: '5000 - 6000',
-                        avatar: const Icon(Icons.monetization_on_outlined),
-                        infoModalConfig: config,
-                      ),
-                      SelectionCardOption(
-                        value: 'Kotlin',
-                        avatar: const Icon(Icons.monetization_on_outlined),
-                        infoModalConfig: config2,
-                      ),
-                      SelectionCardOption(
-                        value: 'Java',
-                        avatar: const Icon(Icons.monetization_on_outlined),
-                        infoModalConfig: config,
-                      ),
-                      SelectionCardOption(
-                        value: 'Swift',
-                        avatar: const Icon(Icons.monetization_on_outlined),
-                        infoModalConfig: config2,
-                      ),
-                      SelectionCardOption(
-                        value: 'Objective-C',
-                        avatar: const Icon(Icons.monetization_on_outlined),
-                        infoModalConfig: config,
-                      ),
-                    ],
-                    onChanged: _onChanged,
-                    validator: FormBuilderValidators.compose([
-                      FormBuilderValidators.minLength(1),
-                    ]),
-                  );
-                }),
+                    SelectionCardOption(
+                      value: 'Java',
+                      avatar: const Icon(Icons.monetization_on_outlined),
+                      infoModalConfig: config,
+                    ),
+                    const SelectionCardOption(
+                      value: 'Swift',
+                      avatar: Icon(Icons.monetization_on_outlined),
+                    ),
+                    SelectionCardOption(
+                      value: 'Objective-C',
+                      avatar: const Icon(Icons.monetization_on_outlined),
+                      infoModalConfig: config,
+                    ),
+                  ],
+                  onChanged: _onChanged,
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.minLength(1),
+                  ]),
+                ),
+                AlippoCustomCheckBoxGroup<String>(
+                  autovalidateMode: AutovalidateMode.onUserInteraction,
+                  name: 'languages_selection',
+                  padding: const EdgeInsets.only(top: 20, bottom: 20, left: 50),
+                  expanded: true,
+                  spacing: 20,
+                  selectedLabelStyle: const TextStyle(
+                    color: Color(0xFFFAF9F9),
+                    fontSize: 18,
+                    fontFamily: 'PP Pangram Sans Rounded',
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.36,
+                  ),
+                  unselectedLabelStyle: const TextStyle(
+                    color: Color(0xFF1A4F76),
+                    fontSize: 18,
+                    fontFamily: 'PP Pangram Sans Rounded',
+                    fontWeight: FontWeight.w400,
+                    letterSpacing: -0.36,
+                  ),
+                  selectedCardColor: const Color(0xFF1A4F76),
+                  defaultCardColor: const Color(0xFFFAF9F9),
+                  selectedShape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      width: 2,
+                      color: Colors.black.withOpacity(0.36000001430511475),
+                    ),
+                    borderRadius: BorderRadius.circular(17),
+                  ),
+                  unselectedShape: RoundedRectangleBorder(
+                    side: BorderSide(
+                      width: 2,
+                      color: Colors.black.withOpacity(0.07000000029802322),
+                    ),
+                    borderRadius: BorderRadius.circular(17),
+                  ),
+                  options: [
+                    SelectionCardOption(
+                      value: '5000 - 6000',
+                      avatar: const Icon(Icons.monetization_on_outlined),
+                      infoModalConfig: config,
+                    ),
+                    SelectionCardOption(
+                      value: 'Kotlin',
+                      avatar: const Icon(Icons.monetization_on_outlined),
+                      infoModalConfig: config2,
+                    ),
+                    SelectionCardOption(
+                      value: 'Java',
+                      avatar: const Icon(Icons.monetization_on_outlined),
+                      infoModalConfig: config,
+                    ),
+                    const SelectionCardOption(
+                      value: 'Swift',
+                      avatar: Icon(Icons.monetization_on_outlined),
+                    ),
+                    SelectionCardOption(
+                      value: 'Objective-C',
+                      avatar: const Icon(Icons.monetization_on_outlined),
+                      infoModalConfig: config,
+                    ),
+                  ],
+                  onChanged: _onChanged,
+                  validator: FormBuilderValidators.compose([
+                    FormBuilderValidators.minLength(1),
+                  ]),
+                )
               ],
             ),
           ),

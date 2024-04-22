@@ -4,7 +4,7 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 import 'comp/selection_card.dart';
 
 /// A list of `Chip`s that acts like radio buttons
-class AlippoSelectionCardGroups<T> extends FormBuilderFieldDecoration<T> {
+class AlippoCustomRadioGroup<T> extends FormBuilderFieldDecoration<T> {
   /// The list of items the user can select.
   final List<SelectionCardOption<T>> options;
 
@@ -69,7 +69,7 @@ class AlippoSelectionCardGroups<T> extends FormBuilderFieldDecoration<T> {
 
   final OutlinedBorder? unselectedShape;
 
-  /// The padding around the [label] widget.
+  /// The padding around the [label]
   ///
   /// By default, this is 4 logical pixels at the beginning and the end of the
   /// label, and zero on top and bottom.
@@ -99,7 +99,6 @@ class AlippoSelectionCardGroups<T> extends FormBuilderFieldDecoration<T> {
   /// Defaults to 4 logical pixels on all sides.
   final EdgeInsets? padding;
 
-  // Wrap Settings
   /// The direction to use as the main axis when wrapping chips.
   ///
   /// For example, if [direction] is [Axis.horizontal], the default, the
@@ -107,21 +106,6 @@ class AlippoSelectionCardGroups<T> extends FormBuilderFieldDecoration<T> {
   /// available horizontal space is consumed, at which point a subsequent
   /// children are placed in a new run vertically adjacent to the previous run.
   final Axis direction;
-
-  /// How the children within a run should be placed in the main axis.
-  ///
-  /// For example, if [alignment] is [WrapAlignment.center], the children in
-  /// each run are grouped together in the center of their run in the main axis.
-  ///
-  /// Defaults to [WrapAlignment.start].
-  ///
-  /// See also:
-  ///
-  ///  * [runAlignment], which controls how the runs are placed relative to each
-  ///    other in the cross axis.
-  ///  * [crossAxisAlignment], which controls how the children within each run
-  ///    are placed relative to each other in the cross axis.
-  final WrapAlignment alignment;
 
   /// How much space to place between children in a run in the main axis.
   ///
@@ -136,8 +120,6 @@ class AlippoSelectionCardGroups<T> extends FormBuilderFieldDecoration<T> {
   /// Defaults to 0.0.
   final double spacing;
 
-  final ShapeBorder avatarBorder;
-
   final bool expanded;
 
   final Duration? animationDuration;
@@ -149,7 +131,7 @@ class AlippoSelectionCardGroups<T> extends FormBuilderFieldDecoration<T> {
   final Curve? reverseAnimationCurve;
 
   /// Creates a list of `Chip`s that acts like radio buttons
-  AlippoSelectionCardGroups({
+  AlippoCustomRadioGroup({
     super.autovalidateMode = AutovalidateMode.disabled,
     super.enabled,
     super.focusNode,
@@ -164,8 +146,6 @@ class AlippoSelectionCardGroups<T> extends FormBuilderFieldDecoration<T> {
     super.onChanged,
     super.valueTransformer,
     super.onReset,
-    this.alignment = WrapAlignment.start,
-    this.avatarBorder = const CircleBorder(),
     this.defaultCardColor,
     this.direction = Axis.horizontal,
     this.disabledColor,
@@ -188,49 +168,32 @@ class AlippoSelectionCardGroups<T> extends FormBuilderFieldDecoration<T> {
     this.reverseAnimationCurve,
   }) : super(
           builder: (FormFieldState<T?> field) {
-            final state = field as _AlippoSelectionCardGroupsState<T>;
+            final state = field as _AlippoCustomRadioGroupsState<T>;
 
             return InputDecorator(
               decoration: state.decoration,
               child: SingleChildScrollView(
-                child: Column(
-                  children: [
-                    for (SelectionCardOption<T> option in options)
-                      Column(
-                        children: [
-                          SelectionCard(
-                            label: option,
-                            selected: field.value == option.value,
-                            onSelected: state.enabled
-                                ? (selected) {
-                                    final choice =
-                                        selected ? option.value : null;
-                                    state.didChange(choice);
-                                  }
-                                : null,
-                            avatar: option.avatar,
-                            selectedIconColor: defaultCardColor,
-                            unselectedIconColor: selectedCardColor,
-                            selectedCardColor: selectedCardColor,
-                            defaultCardColor: defaultCardColor,
-                            disabledColor: disabledColor,
-                            shadowColor: shadowColor,
-                            selectedShadowColor: selectedShadowColor,
-                            elevation: elevation,
-                            pressElevation: pressElevation,
-                            selectedLabelStyle: selectedLabelStyle,
-                            unselectedLabelStyle: unselectedLabelStyle,
-                            labelPadding: labelPadding,
-                            padding: padding,
-                            selectedShape: selectedShape,
-                            unselectedShape: unselectedShape,
-                            expanded: expanded,
-                            infoModalConfig: option.infoModalConfig,
-                          ),
-                          if (options.last != option) SizedBox(height: spacing),
-                        ],
-                      ),
-                  ],
+                child: CustomGroupedRadio<T>(
+                  options: options,
+                  value: field.value,
+                  onChanged: (val) {
+                    field.didChange(val);
+                  },
+                  selectedCardColor: selectedCardColor,
+                  defaultCardColor: defaultCardColor,
+                  disabledColor: disabledColor,
+                  shadowColor: shadowColor,
+                  selectedShadowColor: selectedShadowColor,
+                  elevation: elevation,
+                  pressElevation: pressElevation,
+                  selectedLabelStyle: selectedLabelStyle,
+                  unselectedLabelStyle: unselectedLabelStyle,
+                  labelPadding: labelPadding,
+                  padding: padding,
+                  selectedShape: selectedShape,
+                  unselectedShape: unselectedShape,
+                  expanded: expanded,
+                  spacing: spacing,
                 ),
               ),
             );
@@ -238,9 +201,128 @@ class AlippoSelectionCardGroups<T> extends FormBuilderFieldDecoration<T> {
         );
 
   @override
-  FormBuilderFieldDecorationState<AlippoSelectionCardGroups<T>, T>
-      createState() => _AlippoSelectionCardGroupsState<T>();
+  FormBuilderFieldDecorationState<AlippoCustomRadioGroup<T>, T> createState() =>
+      _AlippoCustomRadioGroupsState<T>();
 }
 
-class _AlippoSelectionCardGroupsState<T>
-    extends FormBuilderFieldDecorationState<AlippoSelectionCardGroups<T>, T> {}
+class _AlippoCustomRadioGroupsState<T>
+    extends FormBuilderFieldDecorationState<AlippoCustomRadioGroup<T>, T> {}
+
+class CustomGroupedRadio<T> extends StatelessWidget {
+  /// The list of items the user can select.
+  final List<SelectionCardOption<T>> options;
+
+  final T? value;
+
+  /// Specifies which checkbox option values should be disabled.
+  /// If this is null, then no checkbox options will be disabled.
+  final List<T> disabled;
+
+  final ValueChanged<T> onChanged;
+  final double? elevation;
+  final double? pressElevation;
+  final Color? selectedCardColor;
+  final Color? disabledColor;
+
+  final Color? defaultCardColor;
+
+  final Color? selectedShadowColor;
+  final Color? shadowColor;
+  final OutlinedBorder? selectedShape;
+
+  final OutlinedBorder? unselectedShape;
+
+  final EdgeInsets? labelPadding;
+
+  final TextStyle? selectedLabelStyle;
+
+  final TextStyle? unselectedLabelStyle;
+
+  final EdgeInsets? padding;
+  final Axis direction;
+  final double spacing;
+
+  final bool expanded;
+
+  final Duration? animationDuration;
+
+  final Duration? reverseAnimationDuration;
+
+  final Curve? animationCurve;
+
+  final Curve? reverseAnimationCurve;
+
+  const CustomGroupedRadio({
+    super.key,
+    required this.options,
+    this.value,
+    required this.onChanged,
+    this.disabled = const [],
+    this.defaultCardColor,
+    this.direction = Axis.horizontal,
+    this.disabledColor,
+    this.elevation,
+    this.labelPadding,
+    this.selectedLabelStyle,
+    this.unselectedLabelStyle,
+    this.padding,
+    this.pressElevation,
+    this.selectedCardColor,
+    this.selectedShadowColor,
+    this.shadowColor,
+    this.selectedShape,
+    this.unselectedShape,
+    this.spacing = 0.0,
+    this.expanded = false,
+    this.animationDuration,
+    this.reverseAnimationDuration,
+    this.animationCurve,
+    this.reverseAnimationCurve,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: <Widget>[
+        for (SelectionCardOption<T> option in options)
+          Column(
+            children: [
+              Builder(builder: (context) {
+                final isOptionDisabled = disabled.contains(option.value);
+                return SelectionCard<T>(
+                  label: option,
+                  selected: value == option.value,
+                  onSelected: (val) {
+                    if (!isOptionDisabled) {
+                      if (val) {
+                        onChanged(option.value);
+                      }
+                    }
+                  },
+                  avatar: option.avatar,
+                  selectedIconColor: defaultCardColor,
+                  unselectedIconColor: selectedCardColor,
+                  selectedCardColor: selectedCardColor,
+                  defaultCardColor: defaultCardColor,
+                  disabledColor: disabledColor,
+                  shadowColor: shadowColor,
+                  selectedShadowColor: selectedShadowColor,
+                  elevation: elevation,
+                  pressElevation: pressElevation,
+                  selectedLabelStyle: selectedLabelStyle,
+                  unselectedLabelStyle: unselectedLabelStyle,
+                  labelPadding: labelPadding,
+                  padding: padding,
+                  selectedShape: selectedShape,
+                  unselectedShape: unselectedShape,
+                  expanded: expanded,
+                  infoModalConfig: option.infoModalConfig,
+                );
+              }),
+              if (options.last.value != option.value) SizedBox(height: spacing),
+            ],
+          ),
+      ],
+    );
+  }
+}
