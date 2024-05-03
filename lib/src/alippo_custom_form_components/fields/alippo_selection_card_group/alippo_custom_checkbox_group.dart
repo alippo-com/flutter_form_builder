@@ -286,48 +286,45 @@ class CustomGroupedCheckBox<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        for (SelectionCardOption<T> option in options)
-          Column(
-            children: [
-              Builder(builder: (context) {
-                final isOptionDisabled = disabled.contains(option.value);
-                return SelectionCard(
-                  label: option,
-                  selected: value.contains(option.value),
-                  onSelected: (val) {
-                    if (isOptionDisabled) return;
-                    List<T> selectedListItems = List.of(value);
-                    selectedListItems.contains(option.value)
-                        ? selectedListItems.remove(option.value)
-                        : selectedListItems.add(option.value);
-                    onChanged(selectedListItems);
-                  },
-                  avatar: option.avatar,
-                  selectedIconColor: defaultCardColor,
-                  unselectedIconColor: selectedCardColor,
-                  selectedCardColor: selectedCardColor,
-                  defaultCardColor: defaultCardColor,
-                  disabledColor: disabledColor,
-                  shadowColor: shadowColor,
-                  selectedShadowColor: selectedShadowColor,
-                  elevation: elevation,
-                  pressElevation: pressElevation,
-                  selectedLabelStyle: selectedLabelStyle,
-                  unselectedLabelStyle: unselectedLabelStyle,
-                  labelPadding: labelPadding,
-                  padding: padding,
-                  selectedShape: selectedShape,
-                  unselectedShape: unselectedShape,
-                  expanded: expanded,
-                  infoModalConfig: option.infoModalConfig,
-                );
-              }),
-              if (options.last.value != option.value) SizedBox(height: spacing),
-            ],
-          ),
-      ],
+    return Wrap(
+      spacing: spacing, // Horizontal spacing between the children
+      runSpacing: spacing, // Vertical spacing between the lines
+      children: options.map((SelectionCardOption<T> option) {
+        return Builder(builder: (context) {
+          final isOptionDisabled = disabled.contains(option.value);
+          return SelectionCard(
+            label: option,
+            selected: value.contains(option.value),
+            onSelected: (val) {
+              if (isOptionDisabled) return;
+              List<T> selectedListItems = List.of(value);
+              selectedListItems.contains(option.value)
+                  ? selectedListItems.remove(option.value)
+                  : selectedListItems.add(option.value);
+              onChanged(selectedListItems);
+            },
+            avatar: option.avatar,
+            selectedIconColor: defaultCardColor,
+            unselectedIconColor: selectedCardColor,
+            selectedCardColor: selectedCardColor,
+            defaultCardColor: defaultCardColor,
+            disabledColor: disabledColor,
+            shadowColor: shadowColor,
+            selectedShadowColor: selectedShadowColor,
+            elevation: elevation,
+            pressElevation: pressElevation,
+            selectedLabelStyle: selectedLabelStyle,
+            unselectedLabelStyle: unselectedLabelStyle,
+            labelPadding: labelPadding,
+            padding:
+                padding?.copyWith(left: 15, right: 15, top: 15, bottom: 15),
+            selectedShape: selectedShape,
+            unselectedShape: unselectedShape,
+            expanded: false,
+            //infoModalConfig: option.infoModalConfig,
+          );
+        });
+      }).toList(),
     );
   }
 }

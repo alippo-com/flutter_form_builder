@@ -484,6 +484,11 @@ class _CompleteFormState extends State<CompleteForm> {
                       avatar: Icon(Icons.monetization_on_outlined),
                     ),
                     SelectionCardOption(
+                      value: 'Dart',
+                      avatar: const Icon(Icons.monetization_on_outlined),
+                      infoModalConfig: config,
+                    ),
+                    SelectionCardOption(
                       value: 'Objective-C',
                       avatar: const Icon(Icons.monetization_on_outlined),
                       infoModalConfig: config,
