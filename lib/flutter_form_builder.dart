@@ -23,3 +23,4 @@ export 'src/options/display_values_enum.dart';
 export 'src/alippo_custom_form_components/fields/alippo_selection_card_group/alippo_custom_radio_group.dart';
 export 'src/alippo_custom_form_components/fields/alippo_selection_card_group/alippo_custom_checkbox_group.dart';
 export 'src/alippo_custom_form_components/fields/alippo_selection_card_group/comp/selection_card_options.dart';
+export 'src/alippo_custom_form_components/check_box/check_box_group.dart';

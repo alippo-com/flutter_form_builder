@@ -209,7 +209,7 @@ class _AlippoCustomCheckBoxGroupState<T>
         List<T>> {}
 
 class CustomGroupedCheckBox<T> extends StatelessWidget {
-  /// The list of items the user can select.
+  /// The list of items the user can select
   final List<SelectionCardOption<T>> options;
 
   /// A list of string which specifies automatically checked checkboxes.
