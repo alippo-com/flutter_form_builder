@@ -407,6 +407,8 @@ class _CompleteFormState extends State<CompleteForm> {
                       ),
                     ),
                   ],
+                  selectedBorderRadius: BorderRadius.circular(8),
+                  selectedColor: Colors.pink,
                 ),
               ],
             ),

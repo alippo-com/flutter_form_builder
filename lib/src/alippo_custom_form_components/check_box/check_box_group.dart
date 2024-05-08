@@ -4,10 +4,15 @@ import 'package:flutter_form_builder/flutter_form_builder.dart';
 class CustomCheckBoxGroup<T> extends FormBuilderFieldDecoration<List<T>> {
   final List<FormBuilderFieldOption<T>> options;
 
+  final BorderRadius selectedBorderRadius;
+  final Color selectedColor;
+
   CustomCheckBoxGroup({
     super.key,
     required super.name,
     required this.options,
+    required this.selectedBorderRadius,
+    required this.selectedColor,
   }) : super(
           builder: (FormFieldState<List<T>?> field) {
             final state = field as _CustomCheckBoxGroupState<T>;
@@ -16,6 +21,8 @@ class CustomCheckBoxGroup<T> extends FormBuilderFieldDecoration<List<T>> {
               child: SingleChildScrollView(
                 child: _CustomGroupedCheckBox<T>(
                   options: options,
+                  selectedBorderRadius: selectedBorderRadius,
+                  selectedColor: selectedColor,
                   value: field.value ?? [],
                   onChanged: (val) {
                     field.didChange(val);
@@ -40,6 +47,9 @@ class _CustomGroupedCheckBox<T> extends StatelessWidget {
   final List<T> value;
   final ValueChanged<List<T>> onChanged;
 
+  final BorderRadius selectedBorderRadius;
+  final Color selectedColor;
+
   final Axis direction;
   final double spacing;
   final bool expanded;
@@ -53,6 +63,8 @@ class _CustomGroupedCheckBox<T> extends StatelessWidget {
     this.direction = Axis.horizontal,
     this.spacing = 0.0,
     this.expanded = false,
+    required this.selectedBorderRadius,
+    required this.selectedColor,
   });
 
   @override
@@ -64,6 +76,8 @@ class _CustomGroupedCheckBox<T> extends StatelessWidget {
         return Builder(builder: (context) {
           return SelectOptionsWrapper(
             isSelected: value.contains(option.value),
+            selectedBorderRadius: selectedBorderRadius,
+            selectedColor: selectedColor,
             child: InkWell(
               onTap: () {
                 List<T> selectedListItems = List.of(value);
@@ -84,11 +98,15 @@ class _CustomGroupedCheckBox<T> extends StatelessWidget {
 class SelectOptionsWrapper extends StatefulWidget {
   final bool isSelected;
   final Widget child;
+  final BorderRadius selectedBorderRadius;
+  final Color selectedColor;
 
   const SelectOptionsWrapper({
     super.key,
     required this.isSelected,
     required this.child,
+    this.selectedBorderRadius = const BorderRadius.all(Radius.circular(4)),
+    this.selectedColor = Colors.red,
   });
 
   @override
@@ -103,9 +121,10 @@ class _SelectOptionsWrapperState extends State<SelectOptionsWrapper> {
       padding: !widget.isSelected ? EdgeInsets.zero : const EdgeInsets.all(4),
       decoration: BoxDecoration(
         border: Border.all(
-          color: widget.isSelected ? Colors.red : Colors.grey,
-          width: 1.0,
+          color: widget.isSelected ? widget.selectedColor : Colors.grey,
+          width: 2.0,
         ),
+        borderRadius: widget.selectedBorderRadius,
       ),
       child: widget.child,
     );
