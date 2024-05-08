@@ -121,7 +121,7 @@ class _SelectOptionsWrapperState extends State<SelectOptionsWrapper> {
       padding: !widget.isSelected ? EdgeInsets.zero : const EdgeInsets.all(4),
       decoration: BoxDecoration(
         border: Border.all(
-          color: widget.isSelected ? widget.selectedColor : Colors.grey,
+          color: widget.isSelected ? widget.selectedColor : Colors.transparent,
           width: 2.0,
         ),
         borderRadius: widget.selectedBorderRadius,
