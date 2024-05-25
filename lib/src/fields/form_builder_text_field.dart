@@ -403,7 +403,8 @@ class FormBuilderTextField extends FormBuilderFieldDecoration<String> {
                     child: Text(
                       suggestion,
                       style: const TextStyle(
-                        color: Colors.black,
+                        color: Color(0xff4B5563),
+                        fontSize: 12,
                       ),
                     ),
                   ),
