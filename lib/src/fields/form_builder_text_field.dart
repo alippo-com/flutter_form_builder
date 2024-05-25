@@ -390,10 +390,15 @@ class FormBuilderTextField extends FormBuilderFieldDecoration<String> {
                     state._effectiveController!.text = suggestion;
                   },
                   child: Container(
-                    padding: const EdgeInsets.all(8),
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
                     decoration: BoxDecoration(
-                      color: Colors.grey[200],
-                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(
+                        color: const Color(0xffD1D5DB),
+                      ),
+                      borderRadius: BorderRadius.circular(24),
                     ),
                     child: Text(
                       suggestion,
@@ -461,7 +466,7 @@ class FormBuilderTextField extends FormBuilderFieldDecoration<String> {
                   contentInsertionConfiguration: contentInsertionConfiguration,
                   spellCheckConfiguration: spellCheckConfiguration,
                 ),
-                if (suggestions.isEmpty) ...[
+                if (suggestions.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Wrap(
                     alignment: WrapAlignment.end,
