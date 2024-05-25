@@ -470,7 +470,7 @@ class FormBuilderTextField extends FormBuilderFieldDecoration<String> {
                 if (suggestions.isNotEmpty) ...[
                   const SizedBox(height: 8),
                   Wrap(
-                    alignment: WrapAlignment.end,
+                    alignment: WrapAlignment.start,
                     children: suggestions.map(
                       (suggestion) {
                         return _buildTextSuggestions(suggestion);
