@@ -12,6 +12,7 @@ class CustomCheckBoxGroup<T> extends FormBuilderFieldDecoration<List<T>> {
     required super.name,
     required this.options,
     required this.selectedBorderRadius,
+    required super.onChanged,
     required this.selectedColor,
   }) : super(
           builder: (FormFieldState<List<T>?> field) {

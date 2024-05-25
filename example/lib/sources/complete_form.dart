@@ -360,6 +360,7 @@ class _CompleteFormState extends State<CompleteForm> {
                   ]),
                 ),
                 CustomCheckBoxGroup(
+                  onChanged: (value) {},
                   name: 'languages_selection',
                   options: [
                     SelectionCardOption(
