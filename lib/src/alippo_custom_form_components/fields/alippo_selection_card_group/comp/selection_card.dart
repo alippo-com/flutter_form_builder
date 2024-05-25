@@ -206,6 +206,7 @@ class _SelectionCardState extends State<SelectionCard>
     return AnimatedBuilder(
       animation: _animation!,
       builder: (_, __) {
+        // Keeping the following point as is
         return Stack(
           children: [
             if (widget.infoModalConfig != null)
