@@ -378,6 +378,34 @@ class FormBuilderTextField extends FormBuilderFieldDecoration<String> {
           builder: (FormFieldState<String?> field) {
             final state = field as _FormBuilderTextFieldState;
 
+            Widget _buildTextSuggestions(String suggestion) {
+              return Padding(
+                padding: const EdgeInsets.only(
+                  right: 8,
+                  top: 4,
+                  bottom: 4,
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    state._effectiveController!.text = suggestion;
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      suggestion,
+                      style: const TextStyle(
+                        color: Colors.black,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+
             return Column(
               children: [
                 TextField(
@@ -436,36 +464,13 @@ class FormBuilderTextField extends FormBuilderFieldDecoration<String> {
                 if (suggestions.isEmpty) ...[
                   const SizedBox(height: 8),
                   Wrap(
-                      alignment: WrapAlignment.end,
-                      children: suggestions.map(
-                        (suggestion) {
-                          return Padding(
-                            padding: const EdgeInsets.only(
-                              right: 8,
-                              top: 4,
-                              bottom: 4,
-                            ),
-                            child: GestureDetector(
-                              onTap: () {
-                                state._effectiveController!.text = suggestion;
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.all(8),
-                                decoration: BoxDecoration(
-                                  color: Colors.grey[200],
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  suggestion,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                      ).toList())
+                    alignment: WrapAlignment.end,
+                    children: suggestions.map(
+                      (suggestion) {
+                        return _buildTextSuggestions(suggestion);
+                      },
+                    ).toList(),
+                  )
                 ]
               ],
             );
