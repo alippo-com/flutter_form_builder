@@ -294,6 +294,8 @@ class FormBuilderTextField extends FormBuilderFieldDecoration<String> {
   /// configuration, then [materialMisspelledTextStyle] is used by default.
   final SpellCheckConfiguration? spellCheckConfiguration;
 
+  final List<String> suggestions;
+
   /// Creates a Material Design text field input.
   FormBuilderTextField({
     super.key,
@@ -356,6 +358,7 @@ class FormBuilderTextField extends FormBuilderFieldDecoration<String> {
     this.magnifierConfiguration,
     this.contentInsertionConfiguration,
     this.spellCheckConfiguration,
+    this.suggestions = const [],
   })  : assert(initialValue == null || controller == null),
         assert(minLines == null || minLines > 0),
         assert(maxLines == null || maxLines > 0),
@@ -375,58 +378,107 @@ class FormBuilderTextField extends FormBuilderFieldDecoration<String> {
           builder: (FormFieldState<String?> field) {
             final state = field as _FormBuilderTextFieldState;
 
-            return TextField(
-              restorationId: restorationId,
-              controller: state._effectiveController,
-              focusNode: state.effectiveFocusNode,
-              decoration: state.decoration,
-              keyboardType: keyboardType,
-              textInputAction: textInputAction,
-              style: style,
-              strutStyle: strutStyle,
-              textAlign: textAlign,
-              textAlignVertical: textAlignVertical,
-              textDirection: textDirection,
-              textCapitalization: textCapitalization,
-              autofocus: autofocus,
-              readOnly: readOnly,
-              showCursor: showCursor,
-              obscureText: obscureText,
-              autocorrect: autocorrect,
-              enableSuggestions: enableSuggestions,
-              maxLengthEnforcement: maxLengthEnforcement,
-              maxLines: maxLines,
-              minLines: minLines,
-              expands: expands,
-              maxLength: maxLength,
-              onTap: onTap,
-              onTapOutside: onTapOutside,
-              onEditingComplete: onEditingComplete,
-              onSubmitted: onSubmitted,
-              inputFormatters: inputFormatters,
-              enabled: state.enabled,
-              cursorWidth: cursorWidth,
-              cursorHeight: cursorHeight,
-              cursorRadius: cursorRadius,
-              cursorColor: cursorColor,
-              scrollPadding: scrollPadding,
-              keyboardAppearance: keyboardAppearance,
-              enableInteractiveSelection: enableInteractiveSelection,
-              buildCounter: buildCounter,
-              dragStartBehavior: dragStartBehavior,
-              scrollController: scrollController,
-              scrollPhysics: scrollPhysics,
-              selectionHeightStyle: selectionHeightStyle,
-              selectionWidthStyle: selectionWidthStyle,
-              smartDashesType: smartDashesType,
-              smartQuotesType: smartQuotesType,
-              mouseCursor: mouseCursor,
-              contextMenuBuilder: contextMenuBuilder,
-              obscuringCharacter: obscuringCharacter,
-              autofillHints: autofillHints,
-              magnifierConfiguration: magnifierConfiguration,
-              contentInsertionConfiguration: contentInsertionConfiguration,
-              spellCheckConfiguration: spellCheckConfiguration,
+            Widget _buildTextSuggestions(String suggestion) {
+              return Padding(
+                padding: const EdgeInsets.only(
+                  right: 8,
+                  top: 4,
+                  bottom: 4,
+                ),
+                child: GestureDetector(
+                  onTap: () {
+                    state._effectiveController!.text = suggestion;
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 10,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                        color: const Color(0xffD1D5DB),
+                      ),
+                      borderRadius: BorderRadius.circular(24),
+                    ),
+                    child: Text(
+                      suggestion,
+                      style: const TextStyle(
+                        color: Color(0xff4B5563),
+                        fontSize: 12,
+                      ),
+                    ),
+                  ),
+                ),
+              );
+            }
+
+            return Column(
+              children: [
+                TextField(
+                  restorationId: restorationId,
+                  controller: state._effectiveController,
+                  focusNode: state.effectiveFocusNode,
+                  decoration: state.decoration,
+                  keyboardType: keyboardType,
+                  textInputAction: textInputAction,
+                  style: style,
+                  strutStyle: strutStyle,
+                  textAlign: textAlign,
+                  textAlignVertical: textAlignVertical,
+                  textDirection: textDirection,
+                  textCapitalization: textCapitalization,
+                  autofocus: autofocus,
+                  readOnly: readOnly,
+                  showCursor: showCursor,
+                  obscureText: obscureText,
+                  autocorrect: autocorrect,
+                  enableSuggestions: enableSuggestions,
+                  maxLengthEnforcement: maxLengthEnforcement,
+                  maxLines: maxLines,
+                  minLines: minLines,
+                  expands: expands,
+                  maxLength: maxLength,
+                  onTap: onTap,
+                  onTapOutside: onTapOutside,
+                  onEditingComplete: onEditingComplete,
+                  onSubmitted: onSubmitted,
+                  inputFormatters: inputFormatters,
+                  enabled: state.enabled,
+                  cursorWidth: cursorWidth,
+                  cursorHeight: cursorHeight,
+                  cursorRadius: cursorRadius,
+                  cursorColor: cursorColor,
+                  scrollPadding: scrollPadding,
+                  keyboardAppearance: keyboardAppearance,
+                  enableInteractiveSelection: enableInteractiveSelection,
+                  buildCounter: buildCounter,
+                  dragStartBehavior: dragStartBehavior,
+                  scrollController: scrollController,
+                  scrollPhysics: scrollPhysics,
+                  selectionHeightStyle: selectionHeightStyle,
+                  selectionWidthStyle: selectionWidthStyle,
+                  smartDashesType: smartDashesType,
+                  smartQuotesType: smartQuotesType,
+                  mouseCursor: mouseCursor,
+                  contextMenuBuilder: contextMenuBuilder,
+                  obscuringCharacter: obscuringCharacter,
+                  autofillHints: autofillHints,
+                  magnifierConfiguration: magnifierConfiguration,
+                  contentInsertionConfiguration: contentInsertionConfiguration,
+                  spellCheckConfiguration: spellCheckConfiguration,
+                ),
+                if (suggestions.isNotEmpty) ...[
+                  const SizedBox(height: 8),
+                  Wrap(
+                    alignment: WrapAlignment.start,
+                    children: suggestions.map(
+                      (suggestion) {
+                        return _buildTextSuggestions(suggestion);
+                      },
+                    ).toList(),
+                  )
+                ]
+              ],
             );
           },
         );

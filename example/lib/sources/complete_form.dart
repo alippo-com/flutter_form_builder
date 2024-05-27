@@ -120,6 +120,12 @@ class _CompleteFormState extends State<CompleteForm> {
                   textInputAction: TextInputAction.next,
                   minLines: 1,
                   maxLines: null,
+                  suggestions: const <String>[
+                    "Baking",
+                    "Running",
+                    "Skiing",
+                    "Ice hockey"
+                  ],
                 ),
                 FormBuilderDateTimePicker(
                   name: 'date',
